@@ -17,7 +17,15 @@ app.get('/health', (req, res) => {
 // API endpoint for chat
 app.post('/api/chat', async (req, res) => {
     try {
-        const { message } = req.body;
+        let { message } = req.body;
+        
+        if (!message || typeof message !== 'string') {
+            return res.status(400).json({ error: 'Message must be a string' });
+        }
+        
+        // Clean the message - remove extra whitespace and sanitize
+        message = message.trim().substring(0, 1000);
+        
         console.log('📨 Message received:', message);
         
         const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -32,7 +40,7 @@ app.post('/api/chat', async (req, res) => {
                 max_tokens: 200,
                 messages: [{
                     role: 'user',
-                    content: `Answer this question in a fun, short way for kids (2-3 sentences max): ${message}`
+                    content: `Answer this in a fun way for kids (2-3 sentences max): ${message}`
                 }]
             })
         });
@@ -40,7 +48,7 @@ app.post('/api/chat', async (req, res) => {
         console.log('✅ API Response status:', response.status);
 
         if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.text();
             console.error('❌ API Error:', response.status, errorData);
             return res.status(response.status).json({ error: errorData });
         }
