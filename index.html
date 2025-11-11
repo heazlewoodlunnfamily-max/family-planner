@@ -8,34 +8,97 @@
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
         html, body { width: 100vw; height: 100vh; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
         
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes float4 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+        
+        .floating-heart {
+            position: absolute;
+            font-size: 80px;
+            opacity: 0.15;
+            animation: float1 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .floating-heart:nth-child(2) {
+            animation: float2 7s ease-in-out infinite;
+        }
+        .floating-heart:nth-child(3) {
+            animation: float3 5.5s ease-in-out infinite;
+        }
+        .floating-heart:nth-child(4) {
+            animation: float4 8s ease-in-out infinite;
+        }
+        
         body {
-            background: linear-gradient(135deg, #FFE5F1 0%, #FFD9E5 15%, #FFE5D4 30%, #FFFDD4 45%, #E8F5E9 60%, #E0F7FA 75%, #F3E5F5 90%, #FFE5F1 100%);
+            background: linear-gradient(135deg, #B4E7F0 0%, #E8D7E8 50%, #D4A5D4 100%);
             background-attachment: fixed;
         }
 
         .app { width: 100%; height: 100%; display: flex; flex-direction: column; }
 
         .header {
-            background: linear-gradient(135deg, rgba(255, 212, 229, 0.95), rgba(255, 229, 212, 0.95));
-            padding: 8px 12px;
+            background: linear-gradient(to right, #A8DDE1, #D4A5D4);
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 50px;
+            height: 60px;
             flex-shrink: 0;
             gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .header h1 { font-size: 18px; font-weight: 700; color: #333; }
+        .header h1 { font-size: 22px; font-weight: 700; color: white; }
 
         .family-members { display: flex; gap: 8px; }
-        .member-badge { padding: 8px 12px; border-radius: 6px; color: white; font-size: 12px; font-weight: 600; cursor: pointer; min-height: 44px; display: flex; align-items: center; transition: all 0.2s; }
+        .member-badge { padding: 10px 14px; border-radius: 6px; color: white; font-size: 12px; font-weight: 700; cursor: pointer; min-height: 44px; display: flex; align-items: center; transition: all 0.2s; }
+        .member-badge:hover { transform: translateY(-1px); }
         .member-badge:active { transform: scale(0.95); }
 
-        .esther-badge { background: #2E7D32; }
-        .lola-badge { background: #00897B; }
-        .mama-badge { background: #1565C0; }
-        .mummy-badge { background: #7B1FA2; }
+        .esther-badge { background: #A8DDE1; }
+        .lola-badge { background: #F8D7E4; }
+        .mama-badge { background: #FABE9F; }
+        .mummy-badge { background: #D4A5D4; }
+
+        .voice-btn {
+            position: absolute;
+            right: 16px;
+            top: 8px;
+            background: #D4A5D4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .voice-btn:hover { background: #C890C0; transform: translateY(-2px); }
+        .voice-btn:active { transform: scale(0.95); }
 
         .content { flex: 1; overflow: hidden; min-height: 0; }
         .page { display: none !important; width: 100%; height: 100%; overflow: hidden; flex-direction: column; }
@@ -154,102 +217,121 @@
             font-size: 12px;
         }
 
-        #calendarPage { padding: 8px; gap: 8px; }
+        #calendarPage { padding: 12px; gap: 12px; background: linear-gradient(135deg, #B4E7F0, #E8D7E8, #D4A5D4); }
         .calendar-header { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; height: auto; }
-        .calendar-header h2 { font-size: 20px; color: #333; }
-        .view-btn, .nav-btn { padding: 8px 14px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; min-height: 36px; transition: all 0.2s; }
+        .calendar-header h2 { font-size: 22px; color: white; font-weight: 700; }
+        .view-btn, .nav-btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; min-height: 40px; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .view-btn:hover, .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .view-btn:active, .nav-btn:active { transform: scale(0.95); }
-        .view-btn { background: #2E7D32; color: white; }
-        .nav-btn { background: #1565C0; color: white; }
+        .view-btn { background: #A8DDE1; color: white; }
+        .nav-btn { background: #FABE9F; color: white; }
 
-        .event-legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; margin-bottom: 6px; }
-        .legend-item { display: flex; gap: 4px; align-items: center; }
-        .legend-color { width: 14px; height: 14px; border-radius: 2px; }
+        .event-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; margin-bottom: 8px; padding: 8px 12px; background: rgba(255,255,255,0.9); border-radius: 6px; }
+        .legend-item { display: flex; gap: 6px; align-items: center; font-weight: 600; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
 
         .calendar-content { flex: 1; overflow: hidden; }
-        .month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; height: 100%; }
-        .month-day { background: white; border-radius: 6px; padding: 8px; border: 2px solid #eee; font-size: 12px; overflow-y: auto; }
-        .month-day.today { border: 2px solid #F9A825; background: rgba(249, 168, 37, 0.05); }
-        .month-day-num { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
-        .month-event { font-size: 10px; padding: 2px 4px; border-radius: 2px; color: white; margin-bottom: 2px; font-weight: 600; }
+        .month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; height: 100%; }
+        .month-day { background: rgba(255,255,255,0.95); border-radius: 8px; padding: 10px; border: 2px solid #E8D7E8; font-size: 12px; overflow-y: auto; transition: all 0.2s; cursor: pointer; }
+        .month-day:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .month-day.today { border: 3px solid #D4A5D4; background: rgba(212, 165, 212, 0.08); }
+        .month-day-num { font-weight: 800; font-size: 16px; margin-bottom: 6px; color: #2C3E50; }
+        .month-event { font-size: 11px; padding: 3px 6px; border-radius: 3px; color: white; margin-bottom: 3px; font-weight: 700; }
 
-        .week-view { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; height: 100%; }
-        .day-column { background: white; border-radius: 6px; padding: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
-        .day-column.today { border: 2px solid #F9A825; background: rgba(249, 168, 37, 0.05); }
-        .day-header { font-weight: 700; font-size: 12px; margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px solid #eee; }
-        .day-content { flex: 1; overflow-y: auto; font-size: 11px; }
-        .event { padding: 4px; border-radius: 3px; color: white; font-weight: 600; margin-bottom: 3px; cursor: pointer; }
+        .week-view { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; height: 100%; }
+        .day-column { background: rgba(255,255,255,0.95); border-radius: 8px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; transition: all 0.2s; border: 2px solid #E8D7E8; }
+        .day-column:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .day-column.today { border: 3px solid #D4A5D4; background: rgba(212, 165, 212, 0.08); }
+        .day-header { font-weight: 800; font-size: 13px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 2px solid #D4A5D4; color: #2C3E50; }
+        .day-content { flex: 1; overflow-y: auto; font-size: 12px; }
+        .event { padding: 6px; border-radius: 4px; color: white; font-weight: 700; margin-bottom: 4px; cursor: pointer; transition: all 0.2s; }
+        .event:hover { transform: scale(1.02); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
 
-        .event-school { background: #2E7D32; }
-        .event-work { background: #1565C0; }
-        .event-holiday { background: #FF6B6B; }
-        .event-shabbat { background: #7B1FA2; }
+        .event-school { background: #A8DDE1; }
+        .event-work { background: #FABE9F; }
+        .event-holiday { background: #F8D7E4; }
+        .event-shabbat { background: #D4A5D4; }
+        .event-esther { background: #A8DDE1; }
+        .event-lola { background: #F8D7E4; }
+        .event-mama { background: #FABE9F; }
+        .event-mummy { background: #D4A5D4; }
 
-        #shoppingPage { padding: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        .shopping-input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; }
-        .shopping-add-btn { padding: 8px 14px; background: #1565C0; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; min-height: 32px; margin-top: 4px; }
-        .shopping-list { flex: 1; overflow-y: auto; font-size: 12px; }
-        .shopping-item { padding: 8px; background: #f5f5f5; border-radius: 4px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
-        .shopping-item button { padding: 4px 8px; background: #FF6B6B; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px; }
+        #shoppingPage { padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: linear-gradient(135deg, #B4E7F0, #E8D7E8, #D4A5D4); height: 100%; }
+
+        .shopping-input { padding: 10px; border: 2px solid #A8DDE1; border-radius: 6px; font-size: 13px; background: rgba(255,255,255,0.95); onfocus: showKeyboard(); }
+        .shopping-add-btn { padding: 10px 16px; background: #A8DDE1; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; min-height: 40px; margin-top: 6px; font-weight: 700; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .shopping-add-btn:hover { background: #8FD9E0; transform: translateY(-2px); }
+        .shopping-add-btn:active { transform: scale(0.95); }
+        .shopping-list { flex: 1; overflow-y: auto; font-size: 13px; padding: 8px; }
+        .shopping-item { padding: 12px; background: rgba(255,255,255,0.95); border-left: 4px solid #A8DDE1; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: all 0.2s; }
+        .shopping-item:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .shopping-item button { padding: 6px 12px; background: #F8D7E4; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 700; transition: all 0.2s; }
+        .shopping-item button:hover { background: #F0B8D4; }
 
         .user-page { 
-            padding: 10px; 
+            padding: 16px; 
             display: flex; 
             flex-direction: row; 
-            gap: 12px;
+            gap: 16px;
             width: 100%;
             height: 100%;
             overflow: hidden;
+            background: linear-gradient(135deg, #B4E7F0, #E8D7E8, #D4A5D4);
         }
         .user-section { 
-            background: white; 
+            background: rgba(255,255,255,0.96); 
             border-radius: 12px; 
-            padding: 14px; 
-            border-left: 4px solid; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+            padding: 18px; 
+            border-top: 4px solid; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
             overflow-y: auto;
             min-height: 0;
+            transition: all 0.2s;
+        }
+        .user-section:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .user-section h3 { 
-            font-size: 18px; 
-            font-weight: 700; 
+            font-size: 16px; 
+            font-weight: 800; 
             margin-bottom: 12px; 
+            color: #2C3E50;
         }
         .user-section p { 
-            font-size: 14px; 
-            color: #666; 
+            font-size: 13px; 
+            color: #555; 
             line-height: 1.8;
         }
-        .user-section h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
-        .user-section p { font-size: 12px; color: #666; }
 
         .bottom-nav {
             display: flex;
             justify-content: space-around;
-            background: linear-gradient(135deg, rgba(255, 212, 229, 0.95), rgba(255, 229, 212, 0.95));
-            border-top: 1px solid rgba(0,0,0,0.1);
-            height: 50px;
+            background: linear-gradient(to right, #A8DDE1, #D4A5D4);
+            border-top: 2px solid rgba(0,0,0,0.1);
+            height: 60px;
             flex-shrink: 0;
             z-index: 100;
             position: relative;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
         }
 
         .nav-item {
             background: none;
             border: none;
             cursor: pointer;
-            padding: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #999;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.8);
             transition: all 0.2s;
             flex: 1;
             text-align: center;
-            min-height: 50px;
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-bottom: 3px solid transparent;
         }
         
         /* Touch optimization */
@@ -262,8 +344,9 @@
             opacity: 0.8;
         }
 
+        .nav-item:hover { color: white; border-bottom: 3px solid rgba(255,255,255,0.5); }
         .nav-item:active { transform: scale(0.95); }
-        .nav-item.active { background: linear-gradient(135deg, #2E7D32, #1565C0); color: white; }
+        .nav-item.active { color: white; border-bottom: 3px solid white; background: rgba(0,0,0,0.1); }
 
         input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
     </style>
@@ -283,57 +366,63 @@
         <div class="content">
             <!-- HOME -->
             <div id="homePage" class="page active">
-                <div class="home-layout">
-                    <div class="home-row home-top">
-                        <div class="widget" style="background: white; border: none; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 6px;">
-                            <div style="font-size: 84px; font-weight: 900; color: #7B1FA2; font-family: 'Courier New'; letter-spacing: 3px;" id="clock">00:00</div>
-                            <div style="font-size: 16px; color: #7B1FA2; margin-top: 4px; font-weight: 600;" id="dateDisplay">Monday, Jan 1</div>
-                        </div>
-                        <div class="widget" style="background: linear-gradient(135deg, #FFB3D9, #FF8FB3); border: none; color: white; justify-content: center; align-items: center; text-align: center; padding: 12px;">
-                            <div style="font-size: 56px; font-weight: 900; letter-spacing: 0px; margin-bottom: 4px;">Chesed</div>
-                            <div style="font-size: 16px; line-height: 1.5; margin-bottom: 6px; font-weight: 600;">We see others<br>We care<br>We act</div>
-                            <div style="font-size: 48px;">🤍</div>
+                <div class="home-layout" style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto auto auto auto; gap: 12px; height: 100%; overflow: hidden; padding: 12px; position: relative;">
+                    
+                    <!-- FLOATING HEARTS BACKGROUND -->
+                    <div class="floating-heart" style="top: 80px; right: 120px; font-size: 100px;">🤍</div>
+                    <div class="floating-heart" style="top: 200px; right: 40px; font-size: 100px; filter: hue-rotate(320deg);">🤍</div>
+                    <div class="floating-heart" style="top: 320px; left: 80px; font-size: 100px; filter: hue-rotate(280deg);">🤍</div>
+                    <div class="floating-heart" style="top: 150px; left: 150px; font-size: 100px; filter: hue-rotate(340deg);">🤍</div>
+                    <div class="floating-heart" style="bottom: 100px; right: 100px; font-size: 100px; filter: hue-rotate(300deg);">🤍</div>
+                    <div class="floating-heart" style="bottom: 50px; left: 120px; font-size: 100px; filter: hue-rotate(260deg);">🤍</div>
+                    
+                    <!-- CLOCK - TOP LEFT (SPANS 5 ROWS) -->
+                    <div class="widget" style="background: linear-gradient(135deg, #A8DDE1, #E8D7E8); border: none; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); grid-row: span 5; min-height: 0; animation: float1 4s ease-in-out infinite;">
+                        <div style="font-size: 70px; font-weight: 900; color: white; font-family: 'Courier New'; letter-spacing: 2px; line-height: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.1);" id="clock">00:00</div>
+                        <div style="font-size: 28px; color: rgba(255,255,255,0.95); margin-top: 8px; font-weight: 800; line-height: 1;" id="dateDisplay">Monday</div>
+                        <div style="font-size: 26px; color: rgba(255,255,255,0.9); font-weight: 700; line-height: 1;" id="monthDisplay">January</div>
+                    </div>
+
+                    <!-- CHESED - TOP MIDDLE -->
+                    <div class="widget" style="background: linear-gradient(135deg, #F8D7E4, #FABE9F); border: none; color: white; justify-content: center; align-items: center; text-align: center; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; min-height: 0; grid-row: 1; animation: float2 5s ease-in-out infinite;">
+                        <div style="font-size: 56px; font-weight: 900; letter-spacing: 0px; margin-bottom: 10px;">Chesed</div>
+                        <div style="font-size: 16px; line-height: 1.7; margin-bottom: 10px; font-weight: 700;">We see others<br>We care<br>We act</div>
+                        <div style="font-size: 48px;">🤍</div>
+                    </div>
+
+                    <!-- TO DO - TOP RIGHT -->
+                    <div class="widget todo-widget" style="background: linear-gradient(135deg, #FEE8D4, #FAD5C1); border-top: 4px solid #FABE9F; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; min-height: 0; grid-row: 1; animation: float3 4.5s ease-in-out infinite;">
+                        <div class="widget-title todo" style="color: #FABE9F;">📝 To Do</div>
+                        <input class="todo-input" id="todoInput" onfocus="showKeyboard('todoInput')" onblur="hideKeyboard()" placeholder="Add..." style="margin-bottom: 8px; padding: 10px; font-size: 13px; border: 2px solid #FABE9F; border-radius: 6px; background: rgba(255,255,255,0.9); font-weight: 600;">
+                        <button class="todo-btn" onclick="addTodo()" style="margin-bottom: 8px; padding: 8px; font-size: 13px; background: #FABE9F; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 700;">Add</button>
+                        <div class="todo-list" id="todoList" style="font-size: 13px; flex: 1; overflow-y: auto;"></div>
+                    </div>
+
+                    <!-- EMPTY SPACE ROWS 2-3 FOR FLOATING EFFECT -->
+                    
+                    <!-- JEWISH WISDOM - ROW 4 (FLOATING) -->
+                    <div class="widget wisdom-widget" style="background: linear-gradient(135deg, #E8D7E8, #D4A5D4); border-top: 4px solid #D4A5D4; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-height: 0; grid-row: 4; animation: float2 5.5s ease-in-out infinite;">
+                        <div class="widget-title wisdom" style="color: #D4A5D4;">💡 Daily Wisdom</div>
+                        <div class="widget-content" id="dailyWisdom" style="font-size: 16px; font-weight: 500; line-height: 1.5; padding: 4px; color: #5A1B7A; flex: 1; overflow-y: auto;"></div>
+                    </div>
+
+                    <!-- WEATHER - ROW 4 (FLOATING) -->
+                    <div class="widget weather-widget" style="background: linear-gradient(135deg, #D4F5FA, #B4E7F0); border-top: 4px solid #A8DDE1; position: relative; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-height: 0; grid-row: 4; animation: float4 6s ease-in-out infinite;">
+                        <div style="position: absolute; top: -10px; right: -10px; font-size: 60px; opacity: 0.1;">☀️</div>
+                        <div class="widget-title weather" style="color: #A8DDE1;">🌤️ Weather</div>
+                        <div class="widget-content" id="weather" style="font-size: 14px; color: #0097A7; line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+                            <div style="font-size: 32px; font-weight: 800;">☀️ 24°C</div>
+                            <div style="font-size: 14px; color: #0097A7; font-weight: 600;">Sunny</div>
+                            <div style="font-size: 42px; margin-top: 2px;" id="moonEmoji">🌙</div>
+                            <div style="font-size: 13px; color: #0097A7; font-weight: 600;" id="moonPhase">Waxing</div>
                         </div>
                     </div>
 
-                    <div class="home-row home-middle">
-                        <div class="widget weather-widget" style="background: linear-gradient(135deg, #E3F2FD, #BBDEFB); border-left: 4px solid #1565C0; position: relative; overflow: hidden;">
-                            <div style="position: absolute; top: -10px; right: -10px; font-size: 60px; opacity: 0.15;">☀️</div>
-                            <div class="widget-title weather">Weather</div>
-                            <div class="widget-content" id="weather" style="font-size: 18px; color: #1565C0; line-height: 1.6;">
-                                <div style="font-size: 24px;">☀️ 24°C</div>
-                                <div style="font-size: 13px; color: #666; font-weight: 500;">Sunny</div>
-                                <div style="font-size: 36px; margin-top: 3px;" id="moonEmoji">🌙</div>
-                                <div style="font-size: 13px; color: #333; font-weight: 600;" id="moonPhase">Waxing</div>
-                            </div>
-                        </div>
-                        <div class="widget todo-widget">
-                            <div class="widget-title todo">To Do</div>
-                            <input class="todo-input" id="todoInput" placeholder="Add..." style="margin-bottom: 6px; padding: 6px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px;">
-                            <button class="todo-btn" onclick="addTodo()" style="margin-bottom: 6px; padding: 6px; font-size: 12px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Add</button>
-                            <div class="todo-list" id="todoList" style="font-size: 13px; flex: 1; overflow-y: auto;"></div>
-                        </div>
-                        <div class="widget chat-widget-container">
-                            <div class="widget-title chat">💬 Ask Planner</div>
-                            <div class="chat-messages-box" id="chatMessagesBox" style="font-size: 13px;"></div>
-                            <div class="chat-input-box">
-                                <input type="text" id="chatInputField" class="chat-input" placeholder="Ask anything..." onkeypress="if(event.key==='Enter') { askPlanner(); event.preventDefault(); }">
-                                <button onclick="askPlanner()" class="chat-send-btn">Ask</button>
-                                <button onclick="startVoiceInput()" class="chat-voice-btn">🎤</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="home-row home-bottom">
-                        <div class="widget event-widget" style="background: linear-gradient(135deg, #FFF3E0, #FFE0B2); border-left: 4px solid #F9A825; position: relative; overflow: hidden;">
-                            <div style="position: absolute; top: -20px; right: -20px; font-size: 80px; opacity: 0.1;">🎉</div>
-                            <div class="widget-title event">Next Event</div>
-                            <div class="widget-content" id="event" style="font-size: 12px; line-height: 1.4;"></div>
-                        </div>
-                        <div class="widget wisdom-widget">
-                            <div class="widget-title wisdom">Daily Wisdom</div>
-                            <div class="widget-content" id="dailyWisdom" style="font-size: 26px; font-weight: normal; line-height: 1.5; padding: 2px;"></div>
-                        </div>
+                    <!-- NEXT EVENT - ROW 4 (FLOATING) -->
+                    <div class="widget event-widget" style="background: linear-gradient(135deg, #FDE8F0, #F8D7E4); border-top: 4px solid #F8D7E4; position: relative; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-height: 0; grid-row: 4; animation: float1 5s ease-in-out infinite;">
+                        <div style="position: absolute; top: -20px; right: -20px; font-size: 80px; opacity: 0.1;">🎉</div>
+                        <div class="widget-title event" style="color: #F8D7E4;">📅 Next Event</div>
+                        <div class="widget-content" id="event" style="font-size: 9px; line-height: 1.3; color: #D81B60; flex: 1; overflow: hidden; word-wrap: break-word;"></div>
                     </div>
                 </div>
             </div>
@@ -347,7 +436,8 @@
                     <button class="nav-btn" onclick="prevMonth()">←</button>
                     <button class="nav-btn" onclick="nextMonth()">→</button>
                     <button class="nav-btn" onclick="today()" style="background: #7B1FA2;">Today</button>
-                    <button class="nav-btn" onclick="navigateTo('home')" style="background: #2E7D32; margin-left: auto;">🏠 Home</button>
+                    <button class="nav-btn" onclick="openQuickAddEvent()" style="background: #F8D7E4; margin-left: auto;">➕ Add Event</button>
+                    <button class="nav-btn" onclick="navigateTo('home')" style="background: #2E7D32;">🏠 Home</button>
                 </div>
                 <div class="event-legend">
                     <div class="legend-item"><div class="legend-color event-school"></div> School</div>
@@ -367,13 +457,15 @@
                 <div style="display: flex; gap: 8px; overflow: hidden; flex: 1;">
                 <div style="flex: 1; background: white; border-radius: 8px; padding: 10px; border-left: 4px solid #E91E63; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column;">
                     <h2 style="font-size: 16px; margin: 0 0 8px 0; color: #E91E63;">🛒 Shopping</h2>
-                    <input class="shopping-input" id="shopInput" placeholder="Add item..." style="padding: 6px; font-size: 11px; margin-bottom: 6px; border: 1px solid #ddd; border-radius: 4px;">
+                    <input class="shopping-input" id="shopInput" onfocus="showKeyboard('shopInput')" onblur="hideKeyboard()" placeholder="Add item..." style="padding: 8px; font-size: 12px; margin-bottom: 6px; border: 2px solid #A8DDE1; border-radius: 6px; background: rgba(255,255,255,0.9);">
+
                     <button class="shopping-add-btn" onclick="addShop()" style="padding: 6px; font-size: 11px; margin-bottom: 6px; background: #E91E63; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Add</button>
                     <div class="shopping-list" id="shopList" style="flex: 1; overflow-y: auto; font-size: 11px;"></div>
                 </div>
                 <div style="flex: 1; background: white; border-radius: 8px; padding: 10px; border-left: 4px solid #FF9800; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column;">
                     <h2 style="font-size: 16px; margin: 0 0 8px 0; color: #FF9800;">💳 Bills</h2>
-                    <input class="shopping-input" id="billInput" placeholder="Add bill..." style="padding: 6px; font-size: 11px; margin-bottom: 6px; border: 1px solid #ddd; border-radius: 4px;">
+                    <input class="shopping-input" id="billInput" onfocus="showKeyboard('billInput')" onblur="hideKeyboard()" placeholder="Add bill..." style="padding: 8px; font-size: 12px; margin-bottom: 6px; border: 2px solid #D4A5D4; border-radius: 6px; background: rgba(255,255,255,0.9);">
+
                     <button class="shopping-add-btn" onclick="addBill()" style="padding: 6px; font-size: 11px; margin-bottom: 6px; background: #FF9800; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Add</button>
                     <div class="shopping-list" id="billList" style="flex: 1; overflow-y: auto; font-size: 11px;"></div>
                 </div>
@@ -389,10 +481,15 @@
                 <div class="user-section" style="border-color: #2E7D32; flex: 1;">
                     <h3 style="font-size: 18px; margin-bottom: 12px; color: #2E7D32;">📅 Calendar</h3>
                     <p style="font-size: 13px; line-height: 1.8;">School 9-3pm Mon-Fri<br>Shabbat Fri evening<br>Homework time 4pm</p>
+                    <div style="margin-top: 10px; padding: 8px; background: #A8DDE1; border-radius: 6px; text-align: center;">
+                        <div style="font-size: 24px; font-weight: 800; color: white;">🔔</div>
+                        <div style="font-size: 11px; color: white; font-weight: 700; margin-top: 4px;">School Alarm<br>Set for 8:15am</div>
+                    </div>
+                    <div id="estherSchoolAlarm" style="margin-top: 8px; padding: 8px; background: #FF6B6B; border-radius: 6px; text-align: center; font-size: 10px; color: white; font-weight: 800; min-height: 20px;"></div>
                 </div>
                 <div class="user-section" style="border-color: #2E7D32; flex: 1;">
                     <h3 style="font-size: 18px; margin-bottom: 12px; color: #2E7D32;">✅ To Do</h3>
-                    <input class="shopping-input" id="estherTodoInput" placeholder="Add item..." style="font-size: 13px; padding: 8px; margin-bottom: 6px;">
+                    <input class="shopping-input" id="estherTodoInput" onfocus="showKeyboard('estherTodoInput')" onblur="hideKeyboard()" placeholder="Add item..." style="font-size: 13px; padding: 8px; margin-bottom: 6px; border: 2px solid #A8DDE1; font-weight: 600;">
                     <button class="shopping-add-btn" onclick="addEstherTodo()" style="font-size: 12px; padding: 8px; margin-bottom: 6px;">Add</button>
                     <div id="estherTodoList" style="font-size: 13px; overflow-y: auto;"></div>
                 </div>
@@ -409,7 +506,7 @@
                 </div>
                 <div class="user-section" style="border-color: #00897B; flex: 1;">
                     <h3 style="font-size: 18px; margin-bottom: 12px; color: #00897B;">✅ To Do</h3>
-                    <input class="shopping-input" id="lolaTodoInput" placeholder="Add item..." style="font-size: 13px; padding: 8px; margin-bottom: 6px;">
+                    <input class="shopping-input" id="lolaTodoInput" onfocus="showKeyboard('lolaTodoInput')" onblur="hideKeyboard()" placeholder="Add item..." style="font-size: 13px; padding: 8px; margin-bottom: 6px; border: 2px solid #F8D7E4; font-weight: 600;">
                     <button class="shopping-add-btn" onclick="addLolaTodo()" style="font-size: 12px; padding: 8px; margin-bottom: 6px;">Add</button>
                     <div id="lolaTodoList" style="font-size: 13px; overflow-y: auto;"></div>
                 </div>
@@ -417,26 +514,14 @@
 
             <!-- MAMA PAGE -->
             <div id="mamaPage" class="page user-page" style="flex-direction: row; gap: 12px; padding: 10px;">
-                <div class="user-section" style="border-color: #1565C0; flex: 1;">
-                    <h3 style="font-size: 18px; margin-bottom: 12px; color: #1565C0;">🛒 Shopping</h3>
-                    <input class="shopping-input" id="mamaShopInput" placeholder="Add item..." style="font-size: 13px; padding: 8px; margin-bottom: 6px;">
-                    <button class="shopping-add-btn" onclick="addMamaShop()" style="font-size: 12px; padding: 8px; margin-bottom: 6px;">Add</button>
-                    <div id="mamaShopList" style="font-size: 13px; overflow-y: auto;"></div>
+                <div class="user-section" style="border-color: #FABE9F; flex: 1;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px; color: #FABE9F; font-weight: 800;">📅 Calendar</h3>
+                    <p style="font-size: 13px; line-height: 1.8; color: #555;">Work 8:30-2pm<br>Pick up kids 2:30pm<br>Dinner prep 5pm<br>Family time 7pm</p>
                 </div>
-                <div class="user-section" style="border-color: #1565C0; flex: 1;">
-                    <h3 style="font-size: 18px; margin-bottom: 12px; color: #1565C0;">💳 Bills</h3>
-                    <input class="shopping-input" id="mamaBillInput" placeholder="Add bill..." style="font-size: 13px; padding: 8px; margin-bottom: 6px;">
-                    <button class="shopping-add-btn" onclick="addMamaBill()" style="font-size: 12px; padding: 8px; margin-bottom: 6px;">Add</button>
-                    <div id="mamaBillList" style="font-size: 13px; overflow-y: auto;"></div>
-                </div>
-                <div class="user-section" style="border-color: #1565C0; flex: 1;">
-                    <h3 style="font-size: 18px; margin-bottom: 12px; color: #1565C0;">📅 Calendar</h3>
-                    <p style="font-size: 13px; line-height: 1.8;">Work 8:30-2pm<br>Pick up kids 2:30pm<br>Dinner prep 5pm<br>Family time 7pm</p>
-                </div>
-                <div class="user-section" style="border-color: #1565C0; flex: 1;">
-                    <h3 style="font-size: 18px; margin-bottom: 12px; color: #1565C0;">✅ To Do</h3>
-                    <input class="shopping-input" id="mamaTodoInput" placeholder="Add item..." style="font-size: 13px; padding: 8px; margin-bottom: 6px;">
-                    <button class="shopping-add-btn" onclick="addMamaTodo()" style="font-size: 12px; padding: 8px; margin-bottom: 6px;">Add</button>
+                <div class="user-section" style="border-color: #FABE9F; flex: 1;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px; color: #FABE9F; font-weight: 800;">✅ To Do</h3>
+                    <input class="shopping-input" id="mamaTodoInput" onfocus="showKeyboard('mamaTodoInput')" onblur="hideKeyboard()" placeholder="Add item..." style="font-size: 13px; padding: 8px; margin-bottom: 6px; border: 2px solid #FABE9F;">
+                    <button class="shopping-add-btn" onclick="addMamaTodo()" style="font-size: 12px; padding: 8px; margin-bottom: 6px; background: #FABE9F;">Add</button>
                     <div id="mamaTodoList" style="font-size: 13px; overflow-y: auto;"></div>
                 </div>
             </div>
@@ -451,22 +536,22 @@
                 <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; overflow: hidden;">
                     <!-- Esther Rewards -->
                     <div style="background: white; border-radius: 12px; padding: 14px; border-left: 4px solid #2E7D32; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex: 1; display: flex; flex-direction: column; overflow: hidden;">
-                        <h3 style="font-size: 18px; margin-bottom: 12px; color: #2E7D32;">🟢 Esther's Rewards</h3>
+                        <h3 style="font-size: 16px; margin-bottom: 12px; color: #A8DDE1; font-weight: 800;">🟢 Esther's Rewards</h3>
                         <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-                            <input id="estherRewardInput" placeholder="What do you want?" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px;">
-                            <input id="estherRewardTokens" placeholder="Tokens" type="number" min="1" style="width: 70px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px;">
-                            <button onclick="addEstherReward()" style="padding: 8px 14px; background: #2E7D32; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;">Add</button>
+                            <input id="estherRewardInput" onfocus="showKeyboard('estherRewardInput')" onblur="hideKeyboard()" placeholder="What do you want?" style="flex: 1; padding: 8px; border: 2px solid #A8DDE1; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                            <input id="estherRewardTokens" onfocus="showKeyboard('estherRewardTokens')" onblur="hideKeyboard()" placeholder="Tokens" type="number" min="1" style="width: 70px; padding: 8px; border: 2px solid #A8DDE1; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                            <button onclick="addEstherReward()" style="padding: 8px 14px; background: #A8DDE1; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 12px;">Add</button>
                         </div>
                         <div id="estherRewardsList" style="flex: 1; overflow-y: auto; font-size: 12px;"></div>
                     </div>
 
                     <!-- Lola Rewards -->
                     <div style="background: white; border-radius: 12px; padding: 14px; border-left: 4px solid #00897B; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex: 1; display: flex; flex-direction: column; overflow: hidden;">
-                        <h3 style="font-size: 18px; margin-bottom: 12px; color: #00897B;">🔵 Lola's Rewards</h3>
+                        <h3 style="font-size: 16px; margin-bottom: 12px; color: #F8D7E4; font-weight: 800;">🔵 Lola's Rewards</h3>
                         <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-                            <input id="lolaRewardInput" placeholder="What do you want?" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px;">
-                            <input id="lolaRewardTokens" placeholder="Tokens" type="number" min="1" style="width: 70px; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px;">
-                            <button onclick="addLolaReward()" style="padding: 8px 14px; background: #00897B; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;">Add</button>
+                            <input id="lolaRewardInput" onfocus="showKeyboard('lolaRewardInput')" onblur="hideKeyboard()" placeholder="What do you want?" style="flex: 1; padding: 8px; border: 2px solid #F8D7E4; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                            <input id="lolaRewardTokens" onfocus="showKeyboard('lolaRewardTokens')" onblur="hideKeyboard()" placeholder="Tokens" type="number" min="1" style="width: 70px; padding: 8px; border: 2px solid #F8D7E4; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                            <button onclick="addLolaReward()" style="padding: 8px 14px; background: #F8D7E4; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 12px;">Add</button>
                         </div>
                         <div id="lolaRewardsList" style="flex: 1; overflow-y: auto; font-size: 12px;"></div>
                     </div>
@@ -478,11 +563,11 @@
                         <h3 style="font-size: 18px; margin-bottom: 12px; color: #F9A825;">🪙 Token Tracker</h3>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div style="background: white; padding: 12px; border-radius: 8px; text-align: center;">
-                                <div style="font-size: 28px; font-weight: 900; color: #2E7D32;" id="estherTokens">0</div>
+                                <div style="font-size: 28px; font-weight: 900; color: #A8DDE1;" id="estherTokens">0</div>
                                 <div style="font-size: 12px; color: #666; font-weight: 600; margin-top: 4px;">Esther Tokens</div>
                             </div>
                             <div style="background: white; padding: 12px; border-radius: 8px; text-align: center;">
-                                <div style="font-size: 28px; font-weight: 900; color: #00897B;" id="lolaTokens">0</div>
+                                <div style="font-size: 28px; font-weight: 900; color: #F8D7E4;" id="lolaTokens">0</div>
                                 <div style="font-size: 12px; color: #666; font-weight: 600; margin-top: 4px;">Lola Tokens</div>
                             </div>
                         </div>
@@ -490,7 +575,7 @@
 
                     <!-- Redeem Rewards -->
                     <div style="background: white; border-radius: 12px; padding: 14px; border-left: 4px solid #1565C0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex: 1; display: flex; flex-direction: column; overflow: hidden;">
-                        <h3 style="font-size: 18px; margin-bottom: 12px; color: #1565C0;">✨ Redeem Rewards</h3>
+                        <h3 style="font-size: 16px; margin-bottom: 12px; color: #D4A5D4; font-weight: 800;">✨ Redeem Rewards</h3>
                         <div style="font-size: 12px; margin-bottom: 8px; font-weight: 600;">Select a child to see their rewards:</div>
                         <div style="display: flex; gap: 8px; margin-bottom: 12px;">
                             <button onclick="showEstherRedeemable()" style="flex: 1; padding: 8px; background: #2E7D32; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;">Esther</button>
@@ -504,20 +589,14 @@
 
             <!-- MUMMY PAGE -->
             <div id="mummyPage" class="page user-page" style="flex-direction: row; gap: 12px; padding: 10px;">
-                <div class="user-section" style="border-color: #7B1FA2; flex: 1;">
-                    <h3 style="font-size: 18px; margin-bottom: 12px; color: #7B1FA2;">💳 Bills</h3>
-                    <input class="shopping-input" id="mummyBillInput" placeholder="Add bill..." style="font-size: 13px; padding: 8px; margin-bottom: 6px;">
-                    <button class="shopping-add-btn" onclick="addMummyBill()" style="font-size: 12px; padding: 8px; margin-bottom: 6px;">Add</button>
-                    <div id="mummyBillList" style="font-size: 13px; overflow-y: auto;"></div>
+                <div class="user-section" style="border-color: #D4A5D4; flex: 1;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px; color: #D4A5D4; font-weight: 800;">📅 Calendar</h3>
+                    <p style="font-size: 13px; line-height: 1.8; color: #555;">Family planning<br>Shabbat prep<br>Community events<br>Family gatherings</p>
                 </div>
-                <div class="user-section" style="border-color: #7B1FA2; flex: 1;">
-                    <h3 style="font-size: 18px; margin-bottom: 12px; color: #7B1FA2;">📅 Calendar</h3>
-                    <p style="font-size: 13px; line-height: 1.8;">Family planning<br>Shabbat prep<br>Community events<br>Family gatherings</p>
-                </div>
-                <div class="user-section" style="border-color: #7B1FA2; flex: 1;">
-                    <h3 style="font-size: 18px; margin-bottom: 12px; color: #7B1FA2;">✅ To Do</h3>
-                    <input class="shopping-input" id="mummyTodoInput" placeholder="Add item..." style="font-size: 13px; padding: 8px; margin-bottom: 6px;">
-                    <button class="shopping-add-btn" onclick="addMummyTodo()" style="font-size: 12px; padding: 8px; margin-bottom: 6px;">Add</button>
+                <div class="user-section" style="border-color: #D4A5D4; flex: 1;">
+                    <h3 style="font-size: 16px; margin-bottom: 12px; color: #D4A5D4; font-weight: 800;">✅ To Do</h3>
+                    <input class="shopping-input" id="mummyTodoInput" onfocus="showKeyboard('mummyTodoInput')" onblur="hideKeyboard()" placeholder="Add item..." style="font-size: 13px; padding: 8px; margin-bottom: 6px; border: 2px solid #D4A5D4;">
+                    <button class="shopping-add-btn" onclick="addMummyTodo()" style="font-size: 12px; padding: 8px; margin-bottom: 6px; background: #D4A5D4;">Add</button>
                     <div id="mummyTodoList" style="font-size: 13px; overflow-y: auto;"></div>
                 </div>
             </div>
@@ -532,14 +611,101 @@
     </div>
 
     <script>
+        // Global Touchscreen Keyboard System
+        let currentKeyboardInputId = null;
+
+        function createGlobalKeyboard() {
+            let keyboard = document.createElement('div');
+            keyboard.id = 'globalTouchKeyboard';
+            keyboard.style.cssText = `
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: none;
+                z-index: 3000;
+                background: linear-gradient(to right, #A8DDE1, #D4A5D4);
+                padding: 12px;
+                box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            keyboard.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-bottom: 8px;">
+                    <button onclick="typeKey('a')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">A</button>
+                    <button onclick="typeKey('b')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">B</button>
+                    <button onclick="typeKey('c')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">C</button>
+                    <button onclick="typeKey('d')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">D</button>
+                    <button onclick="typeKey('e')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">E</button>
+                    <button onclick="typeKey('f')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">F</button>
+                    <button onclick="typeKey('g')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">G</button>
+                    <button onclick="typeKey('h')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">H</button>
+                    <button onclick="typeKey('i')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">I</button>
+                    <button onclick="typeKey('j')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">J</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-bottom: 8px;">
+                    <button onclick="typeKey('k')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">K</button>
+                    <button onclick="typeKey('l')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">L</button>
+                    <button onclick="typeKey('m')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">M</button>
+                    <button onclick="typeKey('n')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">N</button>
+                    <button onclick="typeKey('o')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">O</button>
+                    <button onclick="typeKey('p')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">P</button>
+                    <button onclick="typeKey('q')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">Q</button>
+                    <button onclick="typeKey('r')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">R</button>
+                    <button onclick="typeKey('s')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">S</button>
+                    <button onclick="typeKey('t')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">T</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px;">
+                    <button onclick="typeKey('u')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">U</button>
+                    <button onclick="typeKey('v')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">V</button>
+                    <button onclick="typeKey('w')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">W</button>
+                    <button onclick="typeKey('x')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">X</button>
+                    <button onclick="typeKey('y')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">Y</button>
+                    <button onclick="typeKey('z')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">Z</button>
+                    <button onclick="typeKey(' ')" style="padding: 12px; background: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px; grid-column: span 2;">SPACE</button>
+                    <button onclick="deleteKey()" style="padding: 12px; background: #F8D7E4; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px; grid-column: span 2;">⌫ DEL</button>
+                </div>
+            `;
+            document.body.appendChild(keyboard);
+        }
+
+        function showKeyboard(inputId) {
+            currentKeyboardInputId = inputId;
+            document.getElementById('globalTouchKeyboard').style.display = 'block';
+        }
+
+        function hideKeyboard() {
+            document.getElementById('globalTouchKeyboard').style.display = 'none';
+            currentKeyboardInputId = null;
+        }
+
+        function typeKey(char) {
+            if (currentKeyboardInputId) {
+                let input = document.getElementById(currentKeyboardInputId);
+                if (input) input.value += char;
+            }
+        }
+
+        function deleteKey() {
+            if (currentKeyboardInputId) {
+                let input = document.getElementById(currentKeyboardInputId);
+                if (input) input.value = input.value.slice(0, -1);
+            }
+        }
+
+        // Initialize keyboard on page load
+        window.addEventListener('load', createGlobalKeyboard);
+
         let choresData = {
             esther: JSON.parse(localStorage.getItem('estherChores')) || [
                 { id: 1, task: "Homework", done: false, steps: ["Do Math", "Do English", "Do other subjects"], expandedSteps: false },
                 { id: 2, task: "Take out bin", done: false, steps: ["Find the bin", "Put rubbish in bin", "Close the lid"], expandedSteps: false }
             ],
             lola: JSON.parse(localStorage.getItem('lolaChores')) || [
-                { id: 1, task: "Homework", done: false, steps: ["Do reading", "Do numbers", "Do drawing"], expandedSteps: false },
-                { id: 2, task: "Take out bin", done: false, steps: ["Find the bin", "Put rubbish in bin", "Close the lid"], expandedSteps: false }
+                { id: 1, task: "Put toys back in right place (Every day)", done: false, steps: ["Pick up toys", "Remember where they came from", "Put back in right place"], expandedSteps: false },
+                { id: 2, task: "Put rubbish in the bin (Every day)", done: false, steps: ["Find rubbish", "Walk to bin", "Put in bin"], expandedSteps: false },
+                { id: 3, task: "Put plates in the sink (Every day)", done: false, steps: ["Collect plates", "Carry to sink", "Put in sink"], expandedSteps: false },
+                { id: 4, task: "Put nappy in the bin (Every day)", done: false, steps: ["Get dirty nappy", "Roll up", "Put in bin"], expandedSteps: false },
+                { id: 5, task: "Give cats biscuits (Every day)", done: false, steps: ["Get cat biscuits", "Pour in bowl", "Call the cats"], expandedSteps: false }
             ]
         };
 
@@ -820,6 +986,127 @@
         function nextMonth() { calDate.setMonth(calDate.getMonth() + 1); renderCal(); }
         function today() { calDate = new Date(); renderCal(); }
 
+        function openQuickAddEvent() {
+            let html = `<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+                <div style="background: white; border-radius: 12px; padding: 24px; max-width: 500px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                    <div style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Add Event</div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="font-size: 12px; font-weight: 600; color: #7F8C8D;">Event Name</label>
+                        <input type="text" id="quickEventName" onclick="showTouchKeyboard('quickEventName')" style="width: 100%; padding: 10px; border: 2px solid #ECF0F1; border-radius: 6px; font-size: 14px; margin-top: 4px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="font-size: 12px; font-weight: 600; color: #7F8C8D;">Select Date</label>
+                        <input type="date" id="quickEventDate" style="width: 100%; padding: 10px; border: 2px solid #ECF0F1; border-radius: 6px; font-size: 14px; margin-top: 4px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="font-size: 12px; font-weight: 600; color: #7F8C8D;">Assign To</label>
+                        <select id="quickEventPerson" style="width: 100%; padding: 10px; border: 2px solid #D4A5D4; border-radius: 6px; font-size: 14px; margin-top: 4px; background: rgba(255,255,255,0.9); color: #2C3E50; font-weight: 600;">
+                            <option value="">-- Select Person --</option>
+                            <option value="esther">🟢 Esther</option>
+                            <option value="lola">🔵 Lola</option>
+                            <option value="mama">💙 Mama</option>
+                            <option value="mummy">💜 Mummy</option>
+                        </select>
+                    </div>
+                    
+                    <div id="touchKeyboardArea" style="display: none; margin-bottom: 16px; border: 1px solid #ECF0F1; border-radius: 6px; padding: 12px; background: #F5F7FA;">
+                        <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px;">
+                            <button onclick="addKeyChar('a')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">A</button>
+                            <button onclick="addKeyChar('b')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">B</button>
+                            <button onclick="addKeyChar('c')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">C</button>
+                            <button onclick="addKeyChar('d')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">D</button>
+                            <button onclick="addKeyChar('e')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">E</button>
+                            <button onclick="addKeyChar('f')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">F</button>
+                            <button onclick="addKeyChar('g')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">G</button>
+                            <button onclick="addKeyChar('h')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">H</button>
+                            <button onclick="addKeyChar('i')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">I</button>
+                            <button onclick="addKeyChar('j')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">J</button>
+                            <button onclick="addKeyChar('k')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">K</button>
+                            <button onclick="addKeyChar('l')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">L</button>
+                            <button onclick="addKeyChar('m')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">M</button>
+                            <button onclick="addKeyChar('n')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">N</button>
+                            <button onclick="addKeyChar('o')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">O</button>
+                            <button onclick="addKeyChar('p')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">P</button>
+                            <button onclick="addKeyChar('q')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Q</button>
+                            <button onclick="addKeyChar('r')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">R</button>
+                            <button onclick="addKeyChar('s')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">S</button>
+                            <button onclick="addKeyChar('t')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">T</button>
+                            <button onclick="addKeyChar('u')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">U</button>
+                            <button onclick="addKeyChar('v')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">V</button>
+                            <button onclick="addKeyChar('w')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">W</button>
+                            <button onclick="addKeyChar('x')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">X</button>
+                            <button onclick="addKeyChar('y')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Y</button>
+                            <button onclick="addKeyChar('z')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Z</button>
+                            <button onclick="addKeyChar(' ')" style="padding: 8px; background: #2C3E50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; grid-column: span 2;">SPACE</button>
+                            <button onclick="deleteKeyChar()" style="padding: 8px; background: #E74C3C; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; grid-column: span 3;">⌫ Delete</button>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="saveQuickEvent()" style="flex: 1; padding: 12px; background: #A8DDE1; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px;">Save Event</button>
+                        <button onclick="closeQuickAddEvent()" style="flex: 1; padding: 12px; background: #95A5A6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px;">Cancel</button>
+                    </div>
+                </div>
+            </div>`;
+            
+            let modal = document.createElement('div');
+            modal.id = 'quickAddModal';
+            modal.innerHTML = html;
+            document.body.appendChild(modal);
+            
+            let today = new Date();
+            document.getElementById('quickEventDate').valueAsDate = today;
+        }
+
+        function showTouchKeyboard(inputId) {
+            document.getElementById('touchKeyboardArea').style.display = 'block';
+            window.currentInputId = inputId;
+        }
+
+        function addKeyChar(char) {
+            if (window.currentInputId) {
+                let input = document.getElementById(window.currentInputId);
+                input.value += char;
+            }
+        }
+
+        function deleteKeyChar() {
+            if (window.currentInputId) {
+                let input = document.getElementById(window.currentInputId);
+                input.value = input.value.slice(0, -1);
+            }
+        }
+
+        function saveQuickEvent() {
+            let name = document.getElementById('quickEventName').value.trim();
+            let date = document.getElementById('quickEventDate').value;
+            let person = document.getElementById('quickEventPerson').value;
+            
+            if (!name || !date) {
+                alert('Please fill in event name and date');
+                return;
+            }
+            
+            let dateStr = new Date(date).toDateString();
+            if (!dayEvents[dateStr]) dayEvents[dateStr] = [];
+            dayEvents[dateStr].push({
+                text: name,
+                person: person
+            });
+            localStorage.setItem('dayEvents', JSON.stringify(dayEvents));
+            alert('✨ Event added!');
+            closeQuickAddEvent();
+            renderMonth();
+        }
+
+        function closeQuickAddEvent() {
+            let modal = document.getElementById('quickAddModal');
+            if (modal) modal.remove();
+        }
+
         function renderCal() {
             if (calView === 'month') renderMonth();
             else renderWeek();
@@ -857,10 +1144,10 @@
             let html = '<div style="display: flex; height: 100%; overflow: hidden;">';
             
             // Time column
-            html += '<div style="width: 60px; border-right: 2px solid #eee; flex-shrink: 0; overflow-y: auto;">';
+            html += '<div style="width: 70px; border-right: 2px solid #D4A5D4; flex-shrink: 0; overflow-y: auto; background: rgba(212, 165, 212, 0.05);">';
             html += '<div style="height: 40px;"></div>';
             timeSlots.forEach(h => {
-                html += `<div style="height: 80px; text-align: center; font-size: 11px; font-weight: 600; color: #999; padding-top: 4px; border-bottom: 1px solid #eee;">${h}:00</div>`;
+                html += `<div style="height: 80px; text-align: center; font-size: 12px; font-weight: 700; color: #7B6B8E; padding-top: 6px; border-bottom: 1px solid #E8D7E8;">${h}:00</div>`;
             });
             html += '</div>';
             
@@ -872,28 +1159,28 @@
                 d.setDate(start.getDate() + i);
                 const today = new Date().toDateString() === d.toDateString();
                 const dn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
-                const colors = ['#2E7D32', '#00897B', '#1565C0', '#7B1FA2', '#F9A825', '#FF6B6B', '#FF9800'];
+                const colors = ['#A8DDE1', '#A8DDE1', '#A8DDE1', '#A8DDE1', '#A8DDE1', '#D4A5D4', '#E8D7E8'];
                 
-                html += `<div style="border-right: 1px solid #eee; ${today ? 'background: rgba(249, 168, 37, 0.05);' : ''}">
-                    <div style="font-weight: 700; text-align: center; padding: 8px; border-bottom: 2px solid #eee; font-size: 12px; background: ${colors[i]}; color: white;">${dn} ${d.getDate()}</div>
-                    <div style="position: relative; height: ${timeSlots.length * 80}px; padding: 4px;">`;
+                html += `<div style="border-right: 2px solid #E8D7E8; ${today ? 'background: rgba(212, 165, 212, 0.06);' : 'background: rgba(255,255,255,0.5);'}">
+                    <div style="font-weight: 800; text-align: center; padding: 10px; border-bottom: 3px solid #D4A5D4; font-size: 13px; background: linear-gradient(to right, ${colors[i]}, ${colors[i]}dd); color: white;">${dn} ${d.getDate()}</div>
+                    <div style="position: relative; height: ${timeSlots.length * 80}px; padding: 6px;">`;
                 
                 // School - Mon-Fri 9am-3pm - starts at 9am (80px down)
                 if (d.getDay() !== 0 && d.getDay() !== 6 && isSchoolTerm(d)) {
                     const topPos = (9 - 8) * 80; // Start at 9am
-                    html += `<div style="position: absolute; top: ${topPos}px; left: 8px; right: 8px; height: 50px; background: #2E7D32; color: white; border-radius: 4px; padding: 6px; font-size: 9px; font-weight: 600;">🏫 School<br>9:00am - 3:00pm</div>`;
+                    html += `<div style="position: absolute; top: ${topPos}px; left: 8px; right: 8px; height: 50px; background: linear-gradient(135deg, #A8DDE1, #B4E7F0); color: white; border-radius: 6px; padding: 8px; font-size: 10px; font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">🏫 School<br>9:00am - 3:00pm</div>`;
                 }
                 
                 // Work - Mon-Fri 8:30am-2pm - starts at 8:30am
                 if ([1,2,3,4,5].includes(d.getDay())) {
                     const topPos = (8.5 - 8) * 80; // Start at 8:30am
-                    html += `<div style="position: absolute; top: ${topPos}px; left: 8px; right: 8px; height: 50px; background: #1565C0; color: white; border-radius: 4px; padding: 6px; font-size: 9px; font-weight: 600;">💼 Work<br>8:30am - 2:00pm</div>`;
+                    html += `<div style="position: absolute; top: ${topPos}px; left: 8px; right: 8px; height: 50px; background: linear-gradient(135deg, #FABE9F, #FAC4B0); color: white; border-radius: 6px; padding: 8px; font-size: 10px; font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">💼 Work<br>8:30am - 2:00pm</div>`;
                 }
                 
                 // Shabbat - Friday evening (17:00 = 5pm)
                 if (d.getDay() === 5) {
                     const topPos = (17 - 8) * 80; // Start at 5pm
-                    html += `<div style="position: absolute; top: ${topPos}px; left: 8px; right: 8px; height: 50px; background: #7B1FA2; color: white; border-radius: 4px; padding: 6px; font-size: 9px; font-weight: 600;">🕯️ Shabbat<br>5:00pm</div>`;
+                    html += `<div style="position: absolute; top: ${topPos}px; left: 8px; right: 8px; height: 50px; background: linear-gradient(135deg, #D4A5D4, #E0B3E0); color: white; border-radius: 6px; padding: 8px; font-size: 10px; font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">🕯️ Shabbat<br>5:00pm</div>`;
                 }
                 
                 html += '</div></div>';
@@ -956,9 +1243,52 @@
             
             const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][now.getDay()];
             const monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][now.getMonth()];
-            const dateStr = `${dayName}, ${now.getDate()} ${monthName} ${now.getFullYear()}`;
-            document.getElementById('dateDisplay').textContent = dateStr;
+            const dateNum = now.getDate();
+            
+            document.getElementById('dateDisplay').textContent = `${dayName}, ${dateNum}`;
+            document.getElementById('monthDisplay').textContent = monthName;
+            
+            // Check for school warning alarm
+            checkSchoolAlarm();
         }
+        
+        function checkSchoolAlarm() {
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            
+            // Monday (1) to Friday (5), 8:15 AM
+            const isSchoolDay = dayOfWeek >= 1 && dayOfWeek <= 5;
+            const isAlarmTime = hours === 8 && minutes === 15;
+            
+            if (isSchoolDay && isAlarmTime) {
+                // Play alarm sound if available
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = 800;
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                } catch(e) {}
+                
+                // Show warning message
+                const estherAlarmDiv = document.getElementById('estherSchoolAlarm');
+                if (estherAlarmDiv) {
+                    estherAlarmDiv.innerHTML = '🚨 ESTHER! TIME TO LEAVE FOR SCHOOL! 🚨';
+                    estherAlarmDiv.style.animation = 'pulse 0.5s infinite';
+                }
+            }
+        }
+        
 
         const jewishWisdom = [
             { author: "Hillel", teaching: "Do not do unto others that which is hateful to you.", practice: "💡 Help someone carry something heavy today." },
@@ -1011,6 +1341,34 @@
             { author: "Torah", teaching: "Remember to rest and recharge.", practice: "💡 Take time to rest without feeling guilty." },
             { author: "Jewish Wisdom", teaching: "Courage is being afraid but doing it anyway.", practice: "💡 Do something brave and kind today." }
         ];
+        
+        function updateWeatherAndMoon() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth();
+            const year = now.getFullYear();
+            
+            // Simple moon phase calculation
+            const lunarCycle = 29.53; // days
+            const knownNewMoon = new Date(2024, 0, 11); // A known new moon date
+            const daysSinceKnown = (new Date(year, month, day) - knownNewMoon) / (1000 * 60 * 60 * 24);
+            const lunationIndex = (daysSinceKnown % lunarCycle) / lunarCycle;
+            
+            let moonEmoji = '🌙';
+            let moonPhase = 'Waxing Crescent';
+            
+            if (lunationIndex < 0.125) { moonEmoji = '🌑'; moonPhase = 'New Moon'; }
+            else if (lunationIndex < 0.25) { moonEmoji = '🌒'; moonPhase = 'Waxing Crescent'; }
+            else if (lunationIndex < 0.375) { moonEmoji = '🌓'; moonPhase = 'First Quarter'; }
+            else if (lunationIndex < 0.5) { moonEmoji = '🌔'; moonPhase = 'Waxing Gibbous'; }
+            else if (lunationIndex < 0.625) { moonEmoji = '🌕'; moonPhase = 'Full Moon'; }
+            else if (lunationIndex < 0.75) { moonEmoji = '🌖'; moonPhase = 'Waning Gibbous'; }
+            else if (lunationIndex < 0.875) { moonEmoji = '🌗'; moonPhase = 'Last Quarter'; }
+            else { moonEmoji = '🌘'; moonPhase = 'Waning Crescent'; }
+            
+            document.getElementById('moonEmoji').textContent = moonEmoji;
+            document.getElementById('moonPhase').textContent = moonPhase;
+        }
         
         function getDailyWisdom() {
             const today = new Date();
@@ -1095,9 +1453,53 @@
         }
 
         const events = [
+            // Family Events
             {name:"Esther Birthday",d:new Date(2025,4,22)}, 
             {name:"Mummy Birthday",d:new Date(2025,11,18)}, 
-            {name:"Christmas",d:new Date(2025,11,25)}
+            {name:"Christmas",d:new Date(2025,11,25)},
+            
+            // QLD Public Holidays 2025
+            {name:"Australia Day",d:new Date(2025,0,27)},
+            {name:"Good Friday",d:new Date(2025,3,18)},
+            {name:"Easter Saturday",d:new Date(2025,3,19)},
+            {name:"Easter Monday",d:new Date(2025,3,21)},
+            {name:"ANZAC Day",d:new Date(2025,3,25)},
+            {name:"Queen's Birthday",d:new Date(2025,9,6)},
+            {name:"Royal Queensland Show",d:new Date(2025,7,15)},
+            
+            // Arsenal Women Fixtures - BRISBANE TIMES & DATES (UTC+10)
+            // November 2024
+            {name:"⚽ Arsenal vs Man Utd - 2:00am Sat Nov 2",d:new Date(2024,10,2)},
+            {name:"⚽ Arsenal vs Brighton - 3:00am Sun Nov 10",d:new Date(2024,10,10)},
+            {name:"⚽ Arsenal vs Tottenham - 1:00am Sun Nov 17",d:new Date(2024,10,17)},
+            {name:"⚽ Arsenal vs Liverpool - 4:00am Mon Nov 25",d:new Date(2024,10,24)},
+            {name:"⚽ Arsenal vs Aston Villa - 3:00am Sun Dec 1",d:new Date(2024,10,30)},
+            
+            // December 2024
+            {name:"⚽ Arsenal vs Chelsea - 3:00am Sun Dec 1",d:new Date(2024,11,1)},
+            {name:"⚽ Arsenal vs Man City - 4:00am Sun Dec 8",d:new Date(2024,11,8)},
+            {name:"⚽ Arsenal vs Everton - 3:00am Sun Dec 15",d:new Date(2024,11,15)},
+            {name:"⚽ Arsenal vs West Ham - 2:00am Sun Dec 22",d:new Date(2024,11,22)},
+            {name:"⚽ Arsenal vs Leicester - 3:00am Sun Dec 29",d:new Date(2024,11,29)},
+            
+            // January 2025
+            {name:"⚽ Arsenal vs Brighton - 3:00am Sun Jan 12",d:new Date(2025,0,12)},
+            {name:"⚽ Arsenal vs Man City - 4:00am Sun Jan 19",d:new Date(2025,0,19)},
+            
+            // February 2025
+            {name:"⚽ Arsenal vs Tottenham - 2:00am Sun Feb 2",d:new Date(2025,1,2)},
+            {name:"⚽ Arsenal vs Liverpool - 4:00am Sun Feb 16",d:new Date(2025,1,16)},
+            
+            // March 2025
+            {name:"⚽ Arsenal vs Chelsea - 2:00am Sun Mar 2",d:new Date(2025,2,2)},
+            {name:"⚽ Arsenal vs Man United - 4:00am Sun Mar 16",d:new Date(2025,2,16)},
+            
+            // April 2025
+            {name:"⚽ Arsenal vs Aston Villa - 2:00am Sun Apr 6",d:new Date(2025,3,6)},
+            
+            // May 2025
+            {name:"⚽ Arsenal vs Everton - 3:00am Sun May 4",d:new Date(2025,4,4)},
+            {name:"⚽ Arsenal vs West Ham - 2:00am Sun May 18",d:new Date(2025,4,18)}
         ];
         
         function updateEvent() {
@@ -1114,23 +1516,62 @@
             // Show top 2 events (Mummy Birthday and Christmas)
             const filtered = nextEvents.filter(e => e.name === "Mummy Birthday" || e.name === "Christmas").slice(0, 2);
             
-            let html = '<div style="display: flex; flex-direction: column; gap: 12px;">';
+            let html = '<div style="display: flex; flex-direction: column; gap: 8px;">';
             filtered.forEach(e => {
-                html += `<div style="text-align: center; padding: 10px; background: rgba(255, 255, 255, 0.3); border-radius: 6px;">
-                    <div style="font-size: 48px; font-weight: 900; color: #F9A825;">${e.days} <span style="font-size: 24px; font-weight: 600;">days</span></div>
-                    <div style="font-size: 18px; color: #333; font-weight: 700; margin-top: 4px;">${e.name}</div>
+                html += `<div style="text-align: center; padding: 8px; background: rgba(255, 255, 255, 0.3); border-radius: 4px;">
+                    <div style="font-size: 24px; font-weight: 800; color: #F9A825;">${e.days} <span style="font-size: 12px; font-weight: 600;">days</span></div>
+                    <div style="font-size: 12px; color: #333; font-weight: 700; margin-top: 3px;">${e.name}</div>
                 </div>`;
             });
             html += '</div>';
             document.getElementById('event').innerHTML = html;
         }
+        
+        function renderCalendar() {
+            const calContent = document.getElementById('calContent');
+            if (!calContent) return;
+            
+            let html = '<div style="padding: 16px; max-height: 600px; overflow-y: auto;">';
+            html += '<h3 style="color: #2E7D32; margin-bottom: 16px; font-size: 18px;">📅 All Events & Matches</h3>';
+            
+            // Sort events by date
+            const sortedEvents = [...events].sort((a, b) => new Date(a.d) - new Date(b.d));
+            
+            // Group by month
+            const eventsByMonth = {};
+            sortedEvents.forEach(e => {
+                const monthKey = e.d.toLocaleDateString('en-AU', { year: 'numeric', month: 'long' });
+                if (!eventsByMonth[monthKey]) eventsByMonth[monthKey] = [];
+                eventsByMonth[monthKey].push(e);
+            });
+            
+            // Display events grouped by month
+            Object.entries(eventsByMonth).forEach(([month, eventList]) => {
+                html += `<div style="margin-bottom: 16px;">
+                    <h4 style="color: #A8DDE1; font-size: 14px; margin-bottom: 8px; border-bottom: 2px solid #D4A5D4; padding-bottom: 6px;">${month}</h4>`;
+                
+                eventList.forEach(e => {
+                    const dateStr = e.d.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
+                    html += `<div style="padding: 10px 12px; margin: 6px 0; background: linear-gradient(135deg, rgba(168, 221, 225, 0.2), rgba(248, 215, 228, 0.2)); border-left: 4px solid #A8DDE1; border-radius: 4px; font-size: 13px; color: #333;">
+                        <strong style="color: #2E7D32;">${dateStr}</strong> - ${e.name}
+                    </div>`;
+                });
+                
+                html += '</div>';
+            });
+            
+            html += '</div>';
+            calContent.innerHTML = html;
+        }
 
         setInterval(updateClock, 1000);
         try { updateClock(); } catch(e) {}
+        try { updateWeatherAndMoon(); } catch(e) {}
         try { updateMoonPhase(); } catch(e) {}
         try { updateInspiration(); } catch(e) {}
         try { updateDailyWisdom(); } catch(e) {}
         try { updateEvent(); } catch(e) {}
+        try { renderCalendar(); } catch(e) {}
         try { renderTodos(); } catch(e) {}
         try { renderShop(); } catch(e) {}
         try { renderBill(); } catch(e) {}
@@ -1489,21 +1930,22 @@
                 });
                 renderConversation();
 
-                // Call Anthropic API directly
-                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                // Test connection first
+                try {
+                    const healthCheck = await fetch('/health');
+                    console.log('✅ Server connection:', healthCheck.ok);
+                } catch (e) {
+                    console.log('⚠️ Server might not be running');
+                }
+
+                // Call backend
+                const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': 'proj_8CXQcEIFSwSfvDlNmlElzt8a',
-                        'anthropic-version': '2023-06-01'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: 'claude-sonnet-4-20250514',
-                        max_tokens: 200,
-                        messages: [{
-                            role: 'user',
-                            content: question
-                        }]
+                        message: question
                     })
                 });
 
@@ -1542,7 +1984,7 @@
                     console.error('❌ API error:', response.status, errorData);
                     conversationHistory.push({
                         role: 'assistant',
-                        text: `Error ${response.status}: API issue. Try again!`
+                        text: `Error ${response.status}: ${errorData.error?.message || 'Unable to answer. Check server!'}`
                     });
                     renderConversation();
                 }
