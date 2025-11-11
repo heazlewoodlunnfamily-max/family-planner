@@ -273,10 +273,10 @@
         <div class="header">
             <h1>Family Planner</h1>
             <div class="family-members">
-                <div class="member-badge esther-badge" onclick="setCurrentChatUser('Esther')">🟢 Esther</div>
-                <div class="member-badge lola-badge" onclick="setCurrentChatUser('Lola')">🔵 Lola</div>
-                <div class="member-badge mama-badge" onclick="setCurrentChatUser('Mama')">💙 Mama</div>
-                <div class="member-badge mummy-badge" onclick="setCurrentChatUser('Mummy')">💜 Mummy</div>
+                <div class="member-badge esther-badge" onclick="navigateTo('esther'); setCurrentChatUser('Esther');">🟢 Esther</div>
+                <div class="member-badge lola-badge" onclick="navigateTo('lola'); setCurrentChatUser('Lola');">🔵 Lola</div>
+                <div class="member-badge mama-badge" onclick="navigateTo('mama'); setCurrentChatUser('Mama');">💙 Mama</div>
+                <div class="member-badge mummy-badge" onclick="navigateTo('mummy'); setCurrentChatUser('Mummy');">💜 Mummy</div>
             </div>
         </div>
 
@@ -318,7 +318,7 @@
                             <div class="chat-messages-box" id="chatMessagesBox"></div>
                             <div class="chat-input-box">
                                 <input type="text" id="chatInputField" class="chat-input" placeholder="Type to chat..." onkeypress="if(event.key==='Enter') { sendChatMsg(); event.preventDefault(); }">
-                                <button onclick="startVoiceChat()" class="chat-voice-btn">🎤</button>
+                                <button onclick="startVoiceChat()" class="chat-voice-btn">🎤 Listening</button>
                             </div>
                         </div>
                     </div>
@@ -1175,8 +1175,90 @@
             renderChatMessages();
             // Auto-start voice listening
             setTimeout(() => {
-                startVoiceChat();
-            }, 500);
+                startAutoListening();
+            }, 1000);
+        }
+        
+        let listeningActive = false;
+        
+        function startAutoListening() {
+            if (listeningActive) return;
+            listeningActive = true;
+            
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                console.log('Voice not supported');
+                return;
+            }
+            
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+            
+            recognition.onstart = () => {
+                console.log('🎧 Always listening...');
+            };
+            
+            recognition.onresult = (event) => {
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript.toLowerCase().trim();
+                    
+                    if (event.results[i].isFinal && transcript) {
+                        console.log('Heard:', transcript);
+                        
+                        // Check for "Hey Planner" or variations
+                        if (transcript.includes('hey planner') || transcript.includes('hi planner') || transcript.includes('planner')) {
+                            const question = transcript
+                                .replace('hey planner', '')
+                                .replace('hi planner', '')
+                                .replace('planner', '')
+                                .trim();
+                            
+                            if (question) {
+                                // Add user message
+                                chatHistory.push({
+                                    user: currentChatUser,
+                                    text: question,
+                                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                                });
+                                localStorage.setItem('familyChatHistory', JSON.stringify(chatHistory));
+                                renderChatMessages();
+                                
+                                // Get AI response
+                                getAIResponse(question);
+                            }
+                        }
+                    }
+                }
+            };
+            
+            recognition.onerror = (event) => {
+                console.log('Voice error:', event.error);
+                // Restart on error
+                if (event.error !== 'aborted') {
+                    setTimeout(() => {
+                        listeningActive = false;
+                        startAutoListening();
+                    }, 2000);
+                }
+            };
+            
+            recognition.onend = () => {
+                console.log('Listening ended, restarting...');
+                // Restart listening
+                listeningActive = false;
+                setTimeout(() => {
+                    startAutoListening();
+                }, 1000);
+            };
+            
+            try {
+                recognition.start();
+            } catch (e) {
+                console.log('Error starting voice:', e);
+                listeningActive = false;
+            }
         }
 
         function sendChatMsg() {
@@ -1207,69 +1289,26 @@
         }
 
         function startVoiceChat() {
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                const recognition = new SpeechRecognition();
-                recognition.continuous = true;
-                recognition.interimResults = true;
-                recognition.lang = 'en-US';
-                
-                recognition.onstart = () => {
-                    console.log('Listening...');
-                };
-                
-                recognition.onresult = (event) => {
-                    let interimTranscript = '';
-                    for (let i = event.resultIndex; i < event.results.length; i++) {
-                        const transcript = event.results[i][0].transcript;
-                        if (event.results[i].isFinal) {
-                            // Check if it starts with "Hey Planner"
-                            if (transcript.toLowerCase().includes('hey planner') || transcript.toLowerCase().includes('planner')) {
-                                // Extract the actual message (remove "hey planner")
-                                let message = transcript.toLowerCase().replace('hey planner', '').replace('planner', '').trim();
-                                if (message) {
-                                    // Add user message
-                                    chatHistory.push({
-                                        user: currentChatUser,
-                                        text: message,
-                                        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                                    });
-                                    localStorage.setItem('familyChatHistory', JSON.stringify(chatHistory));
-                                    renderChatMessages();
-                                    
-                                    // Get AI response
-                                    getAIResponse(message);
-                                }
-                            } else {
-                                // Regular voice message
-                                if (transcript.trim()) {
-                                    chatHistory.push({
-                                        user: currentChatUser,
-                                        text: transcript.trim(),
-                                        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                                    });
-                                    localStorage.setItem('familyChatHistory', JSON.stringify(chatHistory));
-                                    renderChatMessages();
-                                }
-                            }
-                        } else {
-                            interimTranscript += transcript;
-                        }
-                    }
-                };
-                
-                recognition.onerror = (event) => {
-                    console.error('Speech recognition error:', event.error);
-                };
-                
-                recognition.start();
+            // Toggle listening (or start new session if needed)
+            if (listeningActive) {
+                console.log('Already listening');
             } else {
-                alert('Voice not supported on this device');
+                startAutoListening();
             }
         }
         
         async function getAIResponse(question) {
             try {
+                console.log('Getting AI response for:', question);
+                
+                // Add a "thinking" message
+                chatHistory.push({
+                    user: 'Family Planner',
+                    text: '🤔 Thinking...',
+                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                });
+                renderChatMessages();
+                
                 const response = await fetch("https://api.anthropic.com/v1/messages", {
                     method: "POST",
                     headers: {
@@ -1277,21 +1316,28 @@
                     },
                     body: JSON.stringify({
                         model: "claude-sonnet-4-20250514",
-                        max_tokens: 200,
+                        max_tokens: 150,
                         messages: [
                             {
                                 role: "user",
-                                content: `Answer this question in a fun, short way for kids (keep it to 1-2 sentences): ${question}`
+                                content: `Answer this question in a fun, short way for kids (1-2 sentences max, no emojis): ${question}`
                             }
                         ]
                     })
                 });
                 
+                // Remove "thinking" message
+                if (chatHistory[chatHistory.length - 1].text === '🤔 Thinking...') {
+                    chatHistory.pop();
+                }
+                
                 if (response.ok) {
                     const data = await response.json();
                     const answer = data.content[0].text;
                     
-                    // Add AI response to chat
+                    console.log('AI answered:', answer);
+                    
+                    // Add AI response
                     chatHistory.push({
                         user: 'Family Planner',
                         text: answer,
@@ -1300,12 +1346,14 @@
                     localStorage.setItem('familyChatHistory', JSON.stringify(chatHistory));
                     renderChatMessages();
                     
-                    // Speak the response
+                    // Speak response
                     speakResponse(answer);
                 } else {
                     console.error('API error:', response.status);
-                    // Fallback response
-                    const fallback = "That's a great question! I'm thinking...";
+                    const error = await response.json();
+                    console.error('Error details:', error);
+                    
+                    const fallback = "I'm having trouble thinking right now. Try again!";
                     chatHistory.push({
                         user: 'Family Planner',
                         text: fallback,
@@ -1315,15 +1363,47 @@
                     speakResponse(fallback);
                 }
             } catch (error) {
-                console.error('Error getting AI response:', error);
+                console.error('Error:', error);
+                
+                // Remove "thinking" message
+                if (chatHistory[chatHistory.length - 1] && chatHistory[chatHistory.length - 1].text === '🤔 Thinking...') {
+                    chatHistory.pop();
+                }
+                
+                const fallback = "Oops! Something went wrong. Ask again!";
+                chatHistory.push({
+                    user: 'Family Planner',
+                    text: fallback,
+                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                });
+                renderChatMessages();
             }
         }
         
         function speakResponse(text) {
             if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.rate = 1.0;
+                // Cancel any previous speech
                 window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9; // Slightly slower
+                utterance.pitch = 1.5; // Higher pitch for female voice
+                utterance.volume = 1;
+                
+                // Try to use a female voice
+                const voices = window.speechSynthesis.getVoices();
+                const femaleVoice = voices.find(v => 
+                    v.name.toLowerCase().includes('female') || 
+                    v.name.toLowerCase().includes('woman') ||
+                    v.name.toLowerCase().includes('samantha') ||
+                    v.name.toLowerCase().includes('victoria') ||
+                    v.name.toLowerCase().includes('karen')
+                ) || voices[1]; // Fallback to second voice if available
+                
+                if (femaleVoice) {
+                    utterance.voice = femaleVoice;
+                }
+                
                 window.speechSynthesis.speak(utterance);
             }
         }
