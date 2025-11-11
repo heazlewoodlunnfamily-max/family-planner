@@ -1171,94 +1171,86 @@
             renderChatMessages();
         }
 
+        let recognition = null;
+        let voiceActive = false;
+        
         function initializeChat() {
             renderChatMessages();
-            // Auto-start voice listening
-            setTimeout(() => {
-                startAutoListening();
-            }, 1000);
+            initVoiceRecognition();
         }
         
-        let listeningActive = false;
-        
-        function startAutoListening() {
-            if (listeningActive) return;
-            listeningActive = true;
-            
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                console.log('Voice not supported');
-                return;
-            }
-            
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = false;
-            recognition.lang = 'en-US';
-            
-            recognition.onstart = () => {
-                console.log('🎧 Always listening...');
-            };
-            
-            recognition.onresult = (event) => {
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const transcript = event.results[i][0].transcript.toLowerCase().trim();
-                    
-                    if (event.results[i].isFinal && transcript) {
-                        console.log('Heard:', transcript);
+        function initVoiceRecognition() {
+            try {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRecognition) {
+                    console.log('Speech Recognition not available');
+                    return;
+                }
+                
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = false;
+                recognition.language = 'en-US';
+                
+                recognition.onstart = () => {
+                    voiceActive = true;
+                    console.log('✓ Listening for "Hey Planner"...');
+                };
+                
+                recognition.onresult = (event) => {
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript.toLowerCase().trim();
+                        const isFinal = event.results[i].isFinal;
                         
-                        // Check for "Hey Planner" or variations
-                        if (transcript.includes('hey planner') || transcript.includes('hi planner') || transcript.includes('planner')) {
-                            const question = transcript
-                                .replace('hey planner', '')
-                                .replace('hi planner', '')
-                                .replace('planner', '')
-                                .trim();
-                            
-                            if (question) {
-                                // Add user message
-                                chatHistory.push({
-                                    user: currentChatUser,
-                                    text: question,
-                                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                                });
-                                localStorage.setItem('familyChatHistory', JSON.stringify(chatHistory));
-                                renderChatMessages();
-                                
-                                // Get AI response
-                                getAIResponse(question);
+                        console.log('Heard:', transcript, 'Final:', isFinal);
+                        
+                        if (isFinal && transcript) {
+                            // Check if contains "hey planner"
+                            if (transcript.includes('hey planner')) {
+                                let question = transcript.replace('hey planner', '').trim();
+                                if (question) {
+                                    handleVoiceQuestion(question);
+                                }
                             }
                         }
                     }
-                }
-            };
-            
-            recognition.onerror = (event) => {
-                console.log('Voice error:', event.error);
-                // Restart on error
-                if (event.error !== 'aborted') {
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error('Voice error:', event.error);
+                };
+                
+                recognition.onend = () => {
+                    console.log('Voice ended, restarting...');
+                    voiceActive = false;
+                    // Restart listening
                     setTimeout(() => {
-                        listeningActive = false;
-                        startAutoListening();
-                    }, 2000);
-                }
-            };
-            
-            recognition.onend = () => {
-                console.log('Listening ended, restarting...');
-                // Restart listening
-                listeningActive = false;
-                setTimeout(() => {
-                    startAutoListening();
-                }, 1000);
-            };
-            
-            try {
+                        if (recognition && !voiceActive) {
+                            recognition.start();
+                        }
+                    }, 500);
+                };
+                
                 recognition.start();
-            } catch (e) {
-                console.log('Error starting voice:', e);
-                listeningActive = false;
+            } catch (error) {
+                console.error('Voice init error:', error);
             }
+        }
+        
+        function handleVoiceQuestion(question) {
+            console.log('Processing question:', question);
+            
+            // Add user message
+            chatHistory.push({
+                user: currentChatUser,
+                text: question,
+                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            });
+            localStorage.setItem('familyChatHistory', JSON.stringify(chatHistory));
+            renderChatMessages();
+            
+            // Get AI response
+            getAIResponse(question);
         }
 
         function sendChatMsg() {
@@ -1289,11 +1281,16 @@
         }
 
         function startVoiceChat() {
-            // Toggle listening (or start new session if needed)
-            if (listeningActive) {
-                console.log('Already listening');
-            } else {
-                startAutoListening();
+            if (recognition) {
+                if (voiceActive) {
+                    recognition.stop();
+                    voiceActive = false;
+                    console.log('Voice stopped');
+                } else {
+                    recognition.start();
+                    voiceActive = true;
+                    console.log('Voice started');
+                }
             }
         }
         
@@ -1313,6 +1310,8 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "x-api-key": localStorage.getItem('anthropicApiKey') || '',
+                        "anthropic-version": "2023-06-01"
                     },
                     body: JSON.stringify({
                         model: "claude-sonnet-4-20250514",
@@ -1381,30 +1380,43 @@
         }
         
         function speakResponse(text) {
-            if ('speechSynthesis' in window) {
-                // Cancel any previous speech
-                window.speechSynthesis.cancel();
+            if (!('speechSynthesis' in window)) {
+                console.log('Speech synthesis not available');
+                return;
+            }
+            
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.9;
+            utterance.pitch = 1.8; // Female voice
+            utterance.volume = 1;
+            
+            // Wait for voices to load
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                // Try to find female voice
+                let selectedVoice = voices.find(v => 
+                    v.name.includes('Female') || 
+                    v.name.includes('woman') ||
+                    v.name.includes('female')
+                );
                 
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.rate = 0.9; // Slightly slower
-                utterance.pitch = 1.5; // Higher pitch for female voice
-                utterance.volume = 1;
-                
-                // Try to use a female voice
-                const voices = window.speechSynthesis.getVoices();
-                const femaleVoice = voices.find(v => 
-                    v.name.toLowerCase().includes('female') || 
-                    v.name.toLowerCase().includes('woman') ||
-                    v.name.toLowerCase().includes('samantha') ||
-                    v.name.toLowerCase().includes('victoria') ||
-                    v.name.toLowerCase().includes('karen')
-                ) || voices[1]; // Fallback to second voice if available
-                
-                if (femaleVoice) {
-                    utterance.voice = femaleVoice;
+                // If no explicit female voice, use a different voice
+                if (!selectedVoice && voices.length > 1) {
+                    selectedVoice = voices[1];
                 }
                 
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                }
+            }
+            
+            try {
                 window.speechSynthesis.speak(utterance);
+                console.log('Speaking:', text);
+            } catch (e) {
+                console.error('Speech error:', e);
             }
         }
     </script>
