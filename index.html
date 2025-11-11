@@ -1489,22 +1489,21 @@
                 });
                 renderConversation();
 
-                // Test connection first
-                try {
-                    const healthCheck = await fetch('/health');
-                    console.log('✅ Server connection:', healthCheck.ok);
-                } catch (e) {
-                    console.log('⚠️ Server might not be running');
-                }
-
-                // Call backend
-                const response = await fetch('/api/chat', {
+                // Call Anthropic API directly
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'x-api-key': 'proj_8CXQcEIFSwSfvDlNmlElzt8a',
+                        'anthropic-version': '2023-06-01'
                     },
                     body: JSON.stringify({
-                        message: question
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 200,
+                        messages: [{
+                            role: 'user',
+                            content: question
+                        }]
                     })
                 });
 
@@ -1543,7 +1542,7 @@
                     console.error('❌ API error:', response.status, errorData);
                     conversationHistory.push({
                         role: 'assistant',
-                        text: `Error ${response.status}: ${errorData.error?.message || 'Unable to answer. Check server!'}`
+                        text: `Error ${response.status}: API issue. Try again!`
                     });
                     renderConversation();
                 }
