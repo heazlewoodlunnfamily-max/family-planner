@@ -151,7 +151,7 @@ const html = `<!DOCTYPE html>
     </div>
 
     <script>
-        let currentUser = null, currentChat = 'group', allChats = [], messages = {}, ws = null, connected = false, unreadCount = 0, connectionAttempted = false, receivedMessageIds = new Set();
+        let currentUser = null, currentChat = 'group', allChats = [], messages = {}, ws = null, connected = false, unreadCount = 0, connectionAttempted = false, receivedMessageIds = new Set(), sentMessageIds = new Set();
 
         const userNames = {
             '2107': 'esther',
@@ -414,7 +414,11 @@ const html = `<!DOCTYPE html>
                     if (!messages[data.data.chatId]) messages[data.data.chatId] = [];
                     messages[data.data.chatId].push(data.data);
                     sessionStorage.setItem('chat_' + data.data.chatId, JSON.stringify(messages[data.data.chatId]));
-                    if (data.data.chatId === currentChat) window.render();
+                    console.log('Total messages in', data.data.chatId + ':', messages[data.data.chatId].length);
+                    if (data.data.chatId === currentChat) {
+                        console.log('Re-rendering chat. Total messages:', messages[currentChat].length);
+                        window.render();
+                    }
                     
                     // Send notification if from someone else
                     if (data.data.user !== currentUser && 'Notification' in window) {
@@ -526,10 +530,26 @@ const html = `<!DOCTYPE html>
             }
             
             try {
+                const sendKey = currentUser + '-' + currentChat + '-' + text + '-' + Date.now();
+                console.log('🔵 SEND ATTEMPT:', sendKey);
+                
+                // Check if we already sent this exact message recently
+                if (sentMessageIds.has(text + currentChat)) {
+                    console.log('⚠️ DUPLICATE SEND ATTEMPT BLOCKED - Already sent recently!');
+                    return;
+                }
+                
+                sentMessageIds.add(text + currentChat);
+                
                 const msg = JSON.stringify({ type: 'new_message', user: currentUser, chatId: currentChat, text: text });
-                console.log('Sending message:', msg);
+                console.log('📤 Sending message:', msg);
                 ws.send(msg);
                 inp.value = '';
+                
+                // Clear this from recent sends after 2 seconds
+                setTimeout(() => {
+                    sentMessageIds.delete(text + currentChat);
+                }, 2000);
             } catch (e) {
                 console.error('Error sending message:', e);
                 alert('Error sending message. Please try again.');
@@ -547,8 +567,10 @@ const html = `<!DOCTYPE html>
             div.className = className;
             div.innerHTML = '';
             const msgs = messages[currentChat] || [];
+            console.log('Rendering', msgs.length, 'messages');
             if (msgs.length === 0) { div.innerHTML = '<div class="empty">No messages yet</div>'; return; }
-            msgs.forEach(m => {
+            msgs.forEach((m, index) => {
+                console.log('  Message ' + index + ':', m.id, m.user, m.text.substring(0, 20));
                 const d = document.createElement('div');
                 d.className = 'message ' + (m.user === currentUser ? 'own' : m.user);
                 const sender = '<div class="message-sender">' + m.user.toUpperCase() + '</div>';
