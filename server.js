@@ -151,7 +151,7 @@ const html = `<!DOCTYPE html>
     </div>
 
     <script>
-        let currentUser = null, currentChat = 'group', allChats = [], messages = {}, ws = null, connected = false, unreadCount = 0, connectionAttempted = false;
+        let currentUser = null, currentChat = 'group', allChats = [], messages = {}, ws = null, connected = false, unreadCount = 0, connectionAttempted = false, receivedMessageIds = new Set();
 
         const userNames = {
             '2107': 'esther',
@@ -389,6 +389,13 @@ const html = `<!DOCTYPE html>
                     messages = data.messages;
                     window.render();
                 } else if (data.type === 'message') {
+                    // Prevent duplicate messages
+                    if (receivedMessageIds.has(data.data.id)) {
+                        console.log('Duplicate message ignored:', data.data.id);
+                        return;
+                    }
+                    receivedMessageIds.add(data.data.id);
+                    
                     if (!messages[data.data.chatId]) messages[data.data.chatId] = [];
                     messages[data.data.chatId].push(data.data);
                     sessionStorage.setItem('chat_' + data.data.chatId, JSON.stringify(messages[data.data.chatId]));
