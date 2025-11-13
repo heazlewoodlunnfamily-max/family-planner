@@ -391,16 +391,19 @@ const html = `<!DOCTYPE html>
             };
             ws.onmessage = (e) => {
                 const data = JSON.parse(e.data);
+                console.log('Client received:', data.type, data);
                 if (data.type === 'load_messages') {
                     messages = data.messages;
                     window.render();
                 } else if (data.type === 'message') {
                     // Prevent duplicate messages - check by ID and content
                     const msgKey = data.data.id + '-' + data.data.user + '-' + data.data.text;
+                    console.log('Checking for duplicate:', msgKey, 'Already seen:', receivedMessageIds.has(msgKey));
                     if (receivedMessageIds.has(msgKey)) {
-                        console.log('Duplicate message ignored:', msgKey);
+                        console.log('🚫 DUPLICATE message ignored:', msgKey);
                         return;
                     }
+                    console.log('✅ NEW message accepted:', msgKey);
                     receivedMessageIds.add(msgKey);
                     
                     // Clear old IDs after many messages to avoid memory leak
@@ -655,24 +658,30 @@ app.get('/service-worker.js', (req, res) => {
 let messages = loadMessages();
 
 wss.on('connection', (ws) => {
+  console.log('New WebSocket connection');
   ws.send(JSON.stringify({ type: 'load_messages', messages }));
   ws.on('message', (data) => {
     try {
       const msg = JSON.parse(data);
+      console.log('Server received:', msg.type, msg);
       if (msg.type === 'new_message') {
         const newMsg = { id: Date.now(), user: msg.user, text: msg.text, chatId: msg.chatId };
         const chatId = msg.chatId || 'group';
         if (!messages[chatId]) messages[chatId] = [];
         messages[chatId].push(newMsg);
         saveMessages(messages);
-        // Broadcast to ALL clients except the sender
+        console.log('Broadcasting to', wss.clients.size, 'clients');
+        // Broadcast to ALL clients
         wss.clients.forEach(client => {
           if (client.readyState === WebSocket.OPEN) {
+            console.log('Sending message to client');
             client.send(JSON.stringify({ type: 'message', data: newMsg }));
           }
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('Server message error:', error);
+    }
   });
 });
 
