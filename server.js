@@ -151,7 +151,7 @@ const html = `<!DOCTYPE html>
     </div>
 
     <script>
-        let currentUser = null, currentChat = 'group', allChats = [], messages = {}, ws = null, connected = false, unreadCount = 0;
+        let currentUser = null, currentChat = 'group', allChats = [], messages = {}, ws = null, connected = false, unreadCount = 0, connectionAttempted = false;
 
         const userNames = {
             '2107': 'esther',
@@ -356,10 +356,17 @@ const html = `<!DOCTYPE html>
 
         window.logout = function() {
             sessionStorage.removeItem('user');
+            connectionAttempted = false;
             location.reload();
         };
 
         window.connect = function() {
+            if (connectionAttempted) {
+                console.log('Already connecting/connected, skipping duplicate connection');
+                return;
+            }
+            connectionAttempted = true;
+            
             const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
             ws = new WebSocket(proto + '//' + location.host);
             ws.onopen = () => {
