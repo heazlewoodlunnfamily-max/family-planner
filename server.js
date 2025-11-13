@@ -367,6 +367,12 @@ const html = `<!DOCTYPE html>
             }
             connectionAttempted = true;
             
+            // Close any existing connection first
+            if (ws) {
+                console.log('Closing old WebSocket connection');
+                ws.close();
+            }
+            
             const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
             ws = new WebSocket(proto + '//' + location.host);
             ws.onopen = () => {
@@ -389,12 +395,18 @@ const html = `<!DOCTYPE html>
                     messages = data.messages;
                     window.render();
                 } else if (data.type === 'message') {
-                    // Prevent duplicate messages
-                    if (receivedMessageIds.has(data.data.id)) {
-                        console.log('Duplicate message ignored:', data.data.id);
+                    // Prevent duplicate messages - check by ID and content
+                    const msgKey = data.data.id + '-' + data.data.user + '-' + data.data.text;
+                    if (receivedMessageIds.has(msgKey)) {
+                        console.log('Duplicate message ignored:', msgKey);
                         return;
                     }
-                    receivedMessageIds.add(data.data.id);
+                    receivedMessageIds.add(msgKey);
+                    
+                    // Clear old IDs after many messages to avoid memory leak
+                    if (receivedMessageIds.size > 1000) {
+                        receivedMessageIds.clear();
+                    }
                     
                     if (!messages[data.data.chatId]) messages[data.data.chatId] = [];
                     messages[data.data.chatId].push(data.data);
@@ -653,6 +665,7 @@ wss.on('connection', (ws) => {
         if (!messages[chatId]) messages[chatId] = [];
         messages[chatId].push(newMsg);
         saveMessages(messages);
+        // Broadcast to ALL clients except the sender
         wss.clients.forEach(client => {
           if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify({ type: 'message', data: newMsg }));
